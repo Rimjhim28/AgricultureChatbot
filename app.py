@@ -49,15 +49,32 @@ model = pickle.load(open('model.pkl','rb'))
 
 @app.route('/api', methods=['POST'])
 def predict():
-	data = request.get_json(force=True)
-	print('HEEELLLOOOO')
-	input = data['exp']
+	dt = request.get_json(force=True)
+	print('OUTPUT:')
+	input = dt['exp']
 	input_count = count_vectorizer.transform(input)
 	input_tfidf = tfidf_transformer.transform(input_count)
 	prediction = model.predict(input_tfidf)
 	output = prediction[0]
-	print(output)
-	return jsonify(output)
+
+	entity = "others"
+	for w in input[0].split():
+		for c in data['Crop']:
+			if c == w:
+				entity = c
+
+	for i in range(len(data)):
+		crp = data.loc[i, 'Crop']
+		ent = data.loc[i, 'QueryType']
+		if crp == entity and ent == output:
+			r = data.loc[i,'KccAns']
+	print('Query: ', input)	
+	print('Answer: ',  r)
+	return jsonify(r)
 
 if __name__ == '__main__':
 	app.run(port=5000, debug=True)
+
+
+
+	
