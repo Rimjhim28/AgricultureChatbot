@@ -2,6 +2,7 @@
 import numpy as np
 import pandas as pd
 from flask import Flask, request, jsonify
+from googletrans import Translator
 import pickle
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
