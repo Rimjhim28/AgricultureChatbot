@@ -69,7 +69,7 @@ def predict():
 		if crp == entity and ent == output:
 			r = data.loc[i,'KccAns']
 	print('Query: ', input)	
-	print('Answer: ',  r)
+	print('Answer: ',  Translator().translate(r,dest = 'hi').text)
 	return jsonify(r)
 
 if __name__ == '__main__':
