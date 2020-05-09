@@ -53,6 +53,7 @@ def predict():
     dt = request.get_json(force=True)
     print('OUTPUT:')
     input = dt['exp']
+    input = [input]
     l= Translator().detect(input[0]).lang
     input[0] = Translator().translate(input[0]).text
     input_count = count_vectorizer.transform(input)
@@ -71,9 +72,10 @@ def predict():
         ent = data.loc[i, 'QueryType']
         if crp == entity and ent == output:
             r = data.loc[i,'KccAns']
+    resp = Translator().translate(r,dest = l).text
     print('Query: ', input)    
-    print('Answer: ', Translator().translate(r,dest = l).text)
-    return jsonify(r)
+    print('Answer: ', resp.encode())
+    return resp.encode()
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
