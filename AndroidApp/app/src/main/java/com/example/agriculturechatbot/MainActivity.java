@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     ListView listView;
     EditText inputResponse;
     ImageButton sendQuery;
-    private ArrayList<String> arrayList;
+    ArrayList<BotResponse> rspList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,34 +27,34 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         listView = findViewById(R.id.chatList);
         inputResponse = findViewById(R.id.editText);
-        sendQuery = findViewById(R.id.senButton);
+//        inputResponse = findViewById(R.id.editText);
+//        sendQuery = findViewById(R.id.sendButton);
 
-        arrayList = new ArrayList<>();
+        rspList = new ArrayList<>();
+        rspList.add(new BotResponse("Query", "Response"));
+        CustomAdapter customAdapter = new CustomAdapter(this, rspList);
+        Log.v("Response list", "size" + rspList.size());
+        listView.setAdapter(customAdapter);
 
-        final ArrayAdapter adapter = new ArrayAdapter<String>(this,
-                R.layout.activity_listview, arrayList);
-
-        listView.setAdapter(adapter);
-
-        sendQuery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String input = inputResponse.getText().toString();
-                Log.v("MainActivity", "text: " + input);
-                arrayList.add(input);
-                adapter.notifyDataSetChanged();
-                inputResponse.setText("");
-                String response = null;
-                try {
-                    response = new CallAPI().execute(input).get();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                arrayList.add(response);
-                adapter.notifyDataSetChanged();
-            }
-        });
+//        sendQuery.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String input = inputResponse.getText().toString();
+//                inputResponse.setText("");
+//                String response = null;
+//                try {
+//                    response = new CallAPI().execute(input).get();
+//                } catch (ExecutionException e) {
+//                    e.printStackTrace();
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//                BotResponse newString = new BotResponse(input, "respomse");
+//                rspList.add(newString);
+//                synchronized(adapter){
+//                    adapter.notify();
+//                }
+//            }
+//        });
     }
 }
