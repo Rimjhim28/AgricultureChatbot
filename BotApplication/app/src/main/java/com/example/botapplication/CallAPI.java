@@ -22,7 +22,7 @@ public class CallAPI extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... params) {
         String response= "Sorry! I don't know the answer :(";
         try {
-            String urlString = "http://10.0.2.2:5000/api";
+            String urlString = "https://agriculturebot.herokuapp.com/api";
             URL url = new URL(urlString);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
