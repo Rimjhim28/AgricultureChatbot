@@ -1,4 +1,4 @@
-package com.example.agriculturechatbot;
+package com.example.botapplication;
 
 class BotResponse {
     String query, response;
