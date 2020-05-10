@@ -1,12 +1,10 @@
-package com.example.agriculturechatbot;
+package com.example.botapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -27,10 +25,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         listView = findViewById(R.id.chatList);
         inputResponse = findViewById(R.id.editText);
-        sendQuery = findViewById(R.id.sendButton);
+        sendQuery = findViewById(R.id.senButton);
 
         rspList = new ArrayList<>();
-        rspList.add(new BotResponse("Query", "Response"));
         final CustomAdapter customAdapter = new CustomAdapter(this, rspList);
         Log.v("Response list", "size" + rspList.size());
         listView.setAdapter(customAdapter);
@@ -39,19 +36,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String input = inputResponse.getText().toString();
-                inputResponse.setText("");
-                String response = null;
-                try {
-                    response = new CallAPI().execute(input).get();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                BotResponse newString = new BotResponse(input, "respomse");
-                rspList.add(newString);
-                synchronized(customAdapter){
-                    customAdapter.notify();
+                input = input.trim();
+                if (input != null || !(input.equals(""))) {
+                    inputResponse.setText("");
+                    String response = null;
+                    try {
+                        response = new CallAPI().execute(input).get();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    BotResponse newString = new BotResponse(input, response);
+                    rspList.add(newString);
+                    customAdapter.notifyDataSetChanged();
                 }
             }
         });
