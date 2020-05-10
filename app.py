@@ -1,6 +1,7 @@
 # Import libraries
 import numpy as np
 import pandas as pd
+import re
 from flask import Flask, request, jsonify
 from googletrans import Translator
 import pickle
@@ -60,17 +61,22 @@ def predict():
     input_tfidf = tfidf_transformer.transform(input_count)
     prediction = model.predict(input_tfidf)
     output = prediction[0]
-
-    entity = "others"
+    
+    test=[]
+    for j in data['Crop']:
+        test.append(str(j))
+    entity = ""
     for w in input[0].split():
-        for c in data['Crop']:
-            if c == w:
-                entity = c
+        for c in test:
+            if re.match(w,c):
+                entity=c
 
     for i in range(len(data)):
         crp = data.loc[i, 'Crop']
         ent = data.loc[i, 'QueryType']
         if crp == entity and ent == output:
+            r = data.loc[i,'KccAns']
+        elif ent == output:
             r = data.loc[i,'KccAns']
     resp = Translator().translate(r,dest = l).text
     print('Query: ', input)    
@@ -79,6 +85,3 @@ def predict():
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
-
-
-	
