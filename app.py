@@ -68,15 +68,13 @@ def predict():
     entity = ""
     for w in input[0].split():
         for c in test:
-            if re.match(w,c):
+            if re.match(w.tolower(),c.tolower()):
                 entity=c
 
     for i in range(len(data)):
         crp = data.loc[i, 'Crop']
         ent = data.loc[i, 'QueryType']
         if crp == entity and ent == output:
-            r = data.loc[i,'KccAns']
-        elif ent == output:
             r = data.loc[i,'KccAns']
     resp = Translator().translate(r,dest = l).text
     print('Query: ', input)    
