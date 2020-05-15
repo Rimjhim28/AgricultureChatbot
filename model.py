@@ -49,7 +49,7 @@ predicted = clf.predict(X_test_tfidf)
 np.mean(predicted==y_test)
 
 #SGD Classifier (accuracy: 0.8042328042328042)
-sgd = SGDClassifier(loss='hinge', penalty='l2', alpha=1e-3, max_iter=5, random_state=42)
+sgd = SGDClassifier(loss='hinge', penalty='l2', alpha=1e-3, max_iter=10, random_state=42)
 clf_sgd = sgd.fit(X_train_tfidf, y_train)
 #predicted_sgd = clf_sgd.predict(X_test_tfidf)
 #print('Accuracy: ', np.mean(predicted_sgd == y_test))
